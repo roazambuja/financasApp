@@ -9,7 +9,6 @@ align-items: center;
 export const Nome = styled.Text`
 text-align: center;
 font-size: 28px;
-margin-top: 25px;
 margin-bottom: 25px;
 color: #FFF;
 `; 
