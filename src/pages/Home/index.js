@@ -2,20 +2,22 @@ import React, { useContext } from 'react';
 import { View, Text, Button, SafeAreaView} from 'react-native';
 
 import { AuthContext } from '../../contexts/auth';
+import Header from '../../component/Header';
+
+import { Background, Container, Nome, Saldo, Title } from './styles';
 
 export default function Home() {
 
-  const { user, signOut } = useContext(AuthContext);
+  const { user } = useContext(AuthContext);
 
  return (
-   <SafeAreaView>
-       <Text>Home</Text>
-       <Text>{user && user.nome }</Text>
-       <Text>{user && user.email }</Text>
-       <Button 
-        title="Sair da conta"
-        onPress={ () => signOut() }
-       />
-   </SafeAreaView>
+   <Background>
+      <Header/>
+      <Container>
+        <Nome>Roberta</Nome>
+        <Saldo>R$123,00</Saldo>
+      </Container>
+      <Title>Ultimas movimentações</Title>
+   </Background>
   );
 }
