@@ -1,10 +1,28 @@
 import React from 'react';
-import { View, Text, SafeAreaView } from 'react-native';
+import { SafeAreaView, Keyboard, TouchableWithoutFeedback } from 'react-native';
+
+import Header from '../../component/Header';
+import { Background, Input, SubmitButton, SubmitText } from './styles';
 
 export default function New() {
  return (
-   <SafeAreaView>
-       <Text>New</Text>
-   </SafeAreaView>
+   <TouchableWithoutFeedback onPress={ () => Keyboard.dismiss()}>
+    <Background>
+      <Header/>
+      <SafeAreaView style={{ alignItems: 'center'}}>
+          <Input
+          placeholder="Valor desejado"
+          kayboardType="numeric"
+          returnKeyType="next"
+          onSubmitEditing={ () => Keyboard.dismiss()}
+          />
+
+          <SubmitButton>
+            <SubmitText>Registrar</SubmitText>
+          </SubmitButton>
+
+      </SafeAreaView>
+    </Background>
+   </TouchableWithoutFeedback>
   );
 }
