@@ -1,10 +1,14 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { SafeAreaView, Keyboard, TouchableWithoutFeedback } from 'react-native';
 
 import Header from '../../component/Header';
 import { Background, Input, SubmitButton, SubmitText } from './styles';
+import Picker from '../../component/Picker';
 
 export default function New() {
+  const [valor, setValor] = useState('');
+  const [tipo, setTipo] = useState(null);
+
  return (
    <TouchableWithoutFeedback onPress={ () => Keyboard.dismiss()}>
     <Background>
@@ -15,7 +19,11 @@ export default function New() {
           kayboardType="numeric"
           returnKeyType="next"
           onSubmitEditing={ () => Keyboard.dismiss()}
+          value={valor}
+          onChangeText={ (text) => setValor(text)}
           />
+
+          <Picker onChange={setTipo}/>
 
           <SubmitButton>
             <SubmitText>Registrar</SubmitText>
