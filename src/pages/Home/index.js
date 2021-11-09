@@ -1,6 +1,7 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { View, Text, Button, SafeAreaView} from 'react-native';
 import firebase from '../../services/firebaseConnection';
+import { format } from 'date-fns';
 
 import { AuthContext } from '../../contexts/auth';
 import Header from '../../component/Header';
@@ -20,6 +21,23 @@ export default function Home() {
       await firebase.database().ref('users').child(uid).on('value', (snapshot) => {
         setSaldo(snapshot.val().saldo);
       });
+
+      await firebase.database().ref('historico')
+      .child(uid)
+      .orderByChild('date').equalTo(format(new Date, 'dd/MM/yy'))
+      .limitToLast(10).on('value', (snapshot) => {
+        setHistorico([]);
+
+        snapshot.forEach((childItem) => {
+          let list = {
+            key: childItem.key,
+            tipo: childItem.val().tipo,
+            valor: childItem.val().valor
+          };
+          setHistorico(oldArray => [...oldArray, list].reverse());
+        })
+      })
+
     }
     loadList();
   }, []);
@@ -29,7 +47,7 @@ export default function Home() {
       <Header/>
       <Container>
         <Nome>{user && user.nome}</Nome>
-        <Saldo>R$ {saldo}</Saldo>
+        <Saldo>R$ {saldo.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.')}</Saldo>
       </Container>
       <Title>Ultimas movimentações</Title>
       <List
