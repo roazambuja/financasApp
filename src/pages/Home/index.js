@@ -44,7 +44,18 @@ export default function Home() {
   }, []);
 
   function handleDelete(data){
-    if(isPast(new Date(data.date))){
+
+    // pegando data do item
+    const [diaItem, mesItem, anoItem ]= data.date.split('/');
+    const dateItem = new Date(`${anoItem}/${mesItem}/${diaItem}`);
+
+    // pegando data de hoje
+    const formatDiaHoje = format(new Date(), 'dd/MM/yyyy');
+    const [diaHoje, mesHoje, anoHoje] = formatDiaHoje.split('/');
+    const dateHoje = new Date(`${anoHoje}/${mesHoje}/${diaHoje}`);
+
+
+    if (isBefore(dateItem, dateHoje)){
       //se a data ja passou
       alert('Você não pode excluir um registro antigo!');
       return;
