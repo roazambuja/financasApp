@@ -1,7 +1,7 @@
 import React, { useContext, useState, useEffect } from 'react';
-import { View, Text, Button, SafeAreaView} from 'react-native';
+import { View, Text, Button, SafeAreaView, Alert} from 'react-native';
 import firebase from '../../services/firebaseConnection';
-import { format } from 'date-fns';
+import { format, isPast } from 'date-fns';
 
 import { AuthContext } from '../../contexts/auth';
 import Header from '../../component/Header';
@@ -32,7 +32,8 @@ export default function Home() {
           let list = {
             key: childItem.key,
             tipo: childItem.val().tipo,
-            valor: childItem.val().valor
+            valor: childItem.val().valor,
+            date: childItem.val().date,
           };
           setHistorico(oldArray => [...oldArray, list].reverse());
         })
@@ -41,6 +42,32 @@ export default function Home() {
     }
     loadList();
   }, []);
+
+  function handleDelete(data){
+    if(isPast(new Date(data.date))){
+      //se a data ja passou
+      alert('Você não pode excluir um registro antigo!');
+      return;
+    }
+    Alert.alert(
+      'Cuidado Atenção!',
+      `Você deseja excluir ${data.tipo} - Valor: ${data.valor}`,
+      [
+        {
+          text: 'Cancelar',
+          style: 'cancel'
+        }, 
+        {
+          text: 'Continuar',
+          onPress: () => handelDeleteSuccess(data)
+        }
+      ]
+    )
+  }
+
+  function handelDeleteSuccess(){
+    
+  }
 
  return (
    <Background>
@@ -54,7 +81,7 @@ export default function Home() {
       showsVerticalScrollIndicator={false}
       data={historico}
       keyExtrator={ item => item.key}
-      renderItem={ ({ item }) => ( <HistoricoList data={item} /> )}
+      renderItem={ ({ item }) => ( <HistoricoList data={item} deleteItem={handleDelete}/> )}
       />
    </Background>
   );
