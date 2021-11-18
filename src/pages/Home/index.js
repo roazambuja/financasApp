@@ -1,7 +1,7 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { View, Text, Button, SafeAreaView, Alert} from 'react-native';
 import firebase from '../../services/firebaseConnection';
-import { format, isPast } from 'date-fns';
+import { format, isBefore } from 'date-fns';
 
 import { AuthContext } from '../../contexts/auth';
 import Header from '../../component/Header';
@@ -24,7 +24,7 @@ export default function Home() {
 
       await firebase.database().ref('historico')
       .child(uid)
-      .orderByChild('date').equalTo(format(new Date, 'dd/MM/yy'))
+      .orderByChild('date').equalTo(format(new Date, 'dd/MM/yyyy'))
       .limitToLast(10).on('value', (snapshot) => {
         setHistorico([]);
 
