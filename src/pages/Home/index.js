@@ -59,13 +59,26 @@ export default function Home() {
         }, 
         {
           text: 'Continuar',
-          onPress: () => handelDeleteSuccess(data)
+          onPress: () => handleDeleteSuccess(data)
         }
       ]
     )
   }
 
-  function handelDeleteSuccess(){
+  async function handleDeleteSuccess(data){
+    await firebase.database().ref('historico')
+    .child(uid).child(data.key).remove()
+    .then(async () => {
+      let saldoAtual = saldo;
+      data.tipo === 'despesa' ? saldoAtual += parseFloat(data.valor) : saldoAtual -= parseFloat(data.valor);
+    
+      await firebase.database().ref('users').child(uid)
+      .child('saldo').set(saldoAtual);
+    })
+    .catch((error) => {
+      console.log(error);
+    })
+
     
   }
 
