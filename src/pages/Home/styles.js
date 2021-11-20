@@ -29,6 +29,12 @@ export const Title = styled.Text`
     margin-bottom: 10px;
 `;
 
+export const Title = styled.View`
+    flex-direction: row;
+    margin-left: 15px;
+    align-items: baseline;
+`;
+
 export const List = styled.FlatList.attrs({
     marginHorizontal: 15
 })`

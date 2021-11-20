@@ -1,13 +1,14 @@
 import React, { useContext, useState, useEffect } from 'react';
-import { View, Text, Button, SafeAreaView, Alert} from 'react-native';
+import { Alert, TouchableOpacity} from 'react-native';
 import firebase from '../../services/firebaseConnection';
 import { format, isBefore } from 'date-fns';
 
 import { AuthContext } from '../../contexts/auth';
 import Header from '../../component/Header';
 import HistoricoList from '../../component/HistoricoList';
+import Icon from '@expo/vector-icons';
 
-import { Background, Container, Nome, Saldo, Title, List } from './styles';
+import { Background, Container, Nome, Saldo, Title, List, Area } from './styles';
 
 export default function Home() {
   const [historico, setHistorico] = useState([]);
@@ -15,6 +16,8 @@ export default function Home() {
 
   const { user } = useContext(AuthContext);
   const uid = user && user.uid;
+
+  const [newDate, setNewDate] = useState(new Date());
 
   useEffect( () => {
     async function loadList() {
@@ -24,7 +27,7 @@ export default function Home() {
 
       await firebase.database().ref('historico')
       .child(uid)
-      .orderByChild('date').equalTo(format(new Date, 'dd/MM/yyyy'))
+      .orderByChild('date').equalTo(format(newDate, 'dd/MM/yyyy'))
       .limitToLast(10).on('value', (snapshot) => {
         setHistorico([]);
 
@@ -93,6 +96,10 @@ export default function Home() {
     
   }
 
+  function handleShowPicker(){
+    
+  }
+
  return (
    <Background>
       <Header/>
@@ -100,7 +107,16 @@ export default function Home() {
         <Nome>{user && user.nome}</Nome>
         <Saldo>R$ {saldo.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.')}</Saldo>
       </Container>
-      <Title>Ultimas movimentações</Title>
+
+      <Area>
+        <TouchableOpacity onPress={handleShowPicker}>
+          <Icon name="event" color="#FFF" size={30} />
+
+        </TouchableOpacity>
+        <Title>Ultimas movimentações</Title>
+      </Area>
+
+      
       <List
       showsVerticalScrollIndicator={false}
       data={historico}
