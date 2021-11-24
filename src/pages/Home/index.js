@@ -6,7 +6,8 @@ import { format, isBefore } from 'date-fns';
 import { AuthContext } from '../../contexts/auth';
 import Header from '../../component/Header';
 import HistoricoList from '../../component/HistoricoList';
-import Icon from '@expo/vector-icons';
+import Icon from '@expo/vector-icons/Fontisto';
+import DatePicker from '../../component/DatePicker';
 
 import { Background, Container, Nome, Saldo, Title, List, Area } from './styles';
 
@@ -18,6 +19,7 @@ export default function Home() {
   const uid = user && user.uid;
 
   const [newDate, setNewDate] = useState(new Date());
+  const [show, setShow] = useState(false);
 
   useEffect( () => {
     async function loadList() {
@@ -97,7 +99,7 @@ export default function Home() {
   }
 
   function handleShowPicker(){
-    
+    setShow(true);
   }
 
  return (
@@ -123,6 +125,10 @@ export default function Home() {
       keyExtrator={ item => item.key}
       renderItem={ ({ item }) => ( <HistoricoList data={item} deleteItem={handleDelete}/> )}
       />
+
+      {show && (
+        <DatePicker />
+      )}
    </Background>
   );
 }

@@ -29,7 +29,7 @@ export const Title = styled.Text`
     margin-bottom: 10px;
 `;
 
-export const Title = styled.View`
+export const Area = styled.View`
     flex-direction: row;
     margin-left: 15px;
     align-items: baseline;
