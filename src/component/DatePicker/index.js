@@ -4,13 +4,13 @@ import DateTimePicker from "@react-native-community/datetimepicker";
 
 import { Container, Header } from "./styles";
 
-export default function DatePicker() {
-  const [dateNow, setDateNow] = useState(new Date());
+export default function DatePicker({ date, onClose, onChange}) {
+  const [dateNow, setDateNow] = useState(new Date(date));
   return (
     <Container>
       {Platform.OS === "ios" && (
         <Header>
-          <TouchableOpacity onPress={() => {}}>
+          <TouchableOpacity onPress={ onClose }>
             <Text>Fechar</Text>
           </TouchableOpacity>
         </Header>
