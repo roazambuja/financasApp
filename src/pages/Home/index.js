@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect } from "react";
-import { Alert, TouchableOpacity } from "react-native";
+import { Alert, Platform, TouchableOpacity } from "react-native";
 import firebase from "../../services/firebaseConnection";
 import { format, isBefore } from "date-fns";
 
@@ -61,7 +61,7 @@ export default function Home() {
         });
     }
     loadList();
-  }, []);
+  }, [newDate]);
 
   function handleDelete(data) {
     // pegando data do item
@@ -127,8 +127,9 @@ export default function Home() {
     setShow(false);
   }
 
-  function onChange() {
-    
+  function onChange(date) {
+    setShow(Platform.OS === 'ios');
+    setNewDate(date);
   }
 
   return (

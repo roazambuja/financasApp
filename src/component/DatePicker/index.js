@@ -19,7 +19,11 @@ export default function DatePicker({ date, onClose, onChange}) {
         value={dateNow}
         mode="date"
         display="default"
-        onChange={(event, date) => {}}
+        onChange={(event, date) => {
+            const currentDate = date || dateNow;
+            setDateNow(currentDate);
+            onChange(currentDate);
+        }}
         style={{ backgroundColor: "white" }}
       />
     </Container>
